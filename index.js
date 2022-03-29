@@ -15,6 +15,8 @@ const validateValue = (value) => {
   }
 };
 
+const isValidKey = (key) => key !== '__proto__' && key !== 'constructor' && key !== 'prototype';
+
 const parse = (data, object) => {
   const obj = object ?? {};
   let previousNode = '';
@@ -24,6 +26,10 @@ const parse = (data, object) => {
       const nodes = property.slice(1).split('.');
       if (nodes.length > 1) {
         const key = nodes.shift() || previousNode;
+        if (!isValidKey(key)) {
+          arr.splice(1);
+          return acc;
+        }
         obj[key] = {
           ...obj[key],
           ...parse([`[${nodes.join('.')}`, ...arr.slice(1)].join('\n'), obj[key]),
@@ -33,11 +39,18 @@ const parse = (data, object) => {
         return key;
       }
       const key = property.slice(1, property.length - 1);
+      if (!isValidKey(key)) {
+        arr.splice(1);
+        return acc;
+      }
       obj[key] = obj[key] ?? {};
 
       return key;
     }
     const [key, value] = property.split('=');
+    if (!isValidKey(key)) {
+      return acc;
+    }
     const trimmedKey = key.trim();
     const trimmedValue = value.trim();
 
