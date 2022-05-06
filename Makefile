@@ -2,10 +2,10 @@ install:
 	npm ci
 
 lint:
-	npx eslint .
+	@npx eslint .
 
 test:
-	npm test -s
+	@npm test -s
 
 test-coverage:
-	npm test -s -- --coverage --coverageProvider=v8
+	@npm test -s -- --coverage --coverageProvider=v8
