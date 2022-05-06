@@ -3,24 +3,17 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/gomez-git/js-ini-parser/badge.svg)](https://snyk.io/test/github/gomez-git/js-ini-parser)
 [![Node CI](https://github.com/gomez-git/js-ini-parser/actions/workflows/NodeCI.yml/badge.svg?branch=main)](https://github.com/gomez-git/js-ini-parser/actions/workflows/NodeCI.yml)
 # Annotation
-Simple parser from ini to javascript object.
-Some advantages:
+Simple parser from ini to javascript object. Some advantages:
 * Zero Dependencies
-* index.js size 1.9kB
+* Size of index.js 1.9kB
 * Native JS
 * Prototype Pollution Protection
 * Tested with jest and snyk
-* Code style with ESLint by AirBnb
-## How to test
-```bash
-$ git clone git@github.com:gomez-git/js-ini-parser.git
-$ make install
-$ make test
-```
+* Code style with ESLint by AirBnb and CodeClimate
 ## How to use
 Install my package with:
 ```bash
-$ npm install https://github.com/gomez-git/js-ini-parser
+npm install https://github.com/gomez-git/js-ini-parser
 ```
 Try it in your project:
 ```javascript
@@ -29,7 +22,7 @@ import parse from 'simple-js-ini-parser';
 
 const data = readFileSync('file.ini', 'utf8');
 const object = parse(data);
-console.log(data);
+console.log(object);
 ```
 ## Example
 ### Input:
