@@ -12,7 +12,8 @@ const prepareData = (data) => data
     }
     return acc;
   }, [])
-  .filter((row) => row.every((value) => !forbiddenValues.test(value)));
+  .filter(([property]) => !forbiddenValues.test(property))
+  .map((row) => row.filter((value) => !forbiddenValues.test(value)));
 
 const formatValue = (value) => {
   switch (true) {
