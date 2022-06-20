@@ -1,6 +1,6 @@
 const prepareData = (data) => data
   .split('\n')
-  .filter((line) => line.match(/^[^;#\s]/))
+  .filter((line) => /^[^;#\s]/.test(line))
   .reduce((acc, line) => {
     if (line.startsWith('[')) {
       acc[acc.length] = [line];
