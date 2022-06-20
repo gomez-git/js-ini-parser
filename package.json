@@ -1,6 +1,6 @@
 {
-  "name": "simple-js-ini-parser",
-  "version": "0.0.2",
+  "name": "@gomez-git/js-ini-parser",
+  "version": "0.0.3",
   "description": "Simple parser from ini to js object",
   "main": "index.js",
   "type": "module",
@@ -12,12 +12,12 @@
     "parser"
   ],
   "author": "Konstantin Kuzin",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.14.0",
+    "eslint": "^8.18.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^26.1.5",
-    "jest": "^27.5.1"
+    "eslint-plugin-jest": "^26.5.3",
+    "jest": "^28.1.1"
   }
 }
