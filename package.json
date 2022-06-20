@@ -1,6 +1,6 @@
 {
-  "version": "0.0.2",
   "name": "@gomez-git/js-ini-parser",
+  "version": "0.0.3",
   "description": "Simple parser from ini to js object",
   "main": "index.js",
   "type": "module",
