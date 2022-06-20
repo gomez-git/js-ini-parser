@@ -18,7 +18,7 @@ npm install https://github.com/gomez-git/js-ini-parser
 Try it in your project:
 ```javascript
 import { readFileSync } from 'fs';
-import parse from 'simple-js-ini-parser';
+import parse from '@gomez-git/js-ini-parser';
 
 const data = readFileSync('file.ini', 'utf8');
 const object = parse(data);
