@@ -2,6 +2,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d60ac6392b0647ff2ff6/test_coverage)](https://codeclimate.com/github/gomez-git/js-ini-parser/test_coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/gomez-git/js-ini-parser/badge.svg)](https://snyk.io/test/github/gomez-git/js-ini-parser)
 [![Node CI](https://github.com/gomez-git/js-ini-parser/actions/workflows/NodeCI.yml/badge.svg?branch=main)](https://github.com/gomez-git/js-ini-parser/actions/workflows/NodeCI.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # Annotation
 Simple parser from ini to javascript object. Some advantages:
 * Zero Dependencies
