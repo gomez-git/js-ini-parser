@@ -48,7 +48,14 @@ const callback = (obj) => (acc, property, _i, arr) => {
   const [key, value] = property.split('=');
   const trimmedKey = key.trim();
   const trimmedValue = value.trim();
-    obj[acc][trimmedKey] = obj[acc][trimmedKey] ?? formatValue(trimmedValue);
+
+  if (trimmedKey.endsWith('[]')) {
+    const newKey = trimmedKey.slice(0, -2);
+    obj[acc][newKey] = obj[acc][newKey] ?? [];
+    obj[acc][newKey] = [...obj[acc][newKey], formatValue(trimmedValue)];
+  } else {
+    obj[acc][trimmedKey] = formatValue(trimmedValue);
+  }
 
   return acc;
 };
