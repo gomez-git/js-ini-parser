@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign, no-use-before-define */
 const forbiddenValues = /(constructor|__proto__|prototype)/;
 
 const prepareData = (data) => data
