@@ -25,43 +25,42 @@ const formatValue = (value) => {
   }
 };
 
+const callback = (obj) => (acc, property, _i, arr) => {
+  if (property.startsWith('[')) {
+    const nodes = property.slice(1).split('.');
 
-const parse = (data, object) => {
-  const obj = object ?? {};
-  let previousNode = '';
-
-  const callback = (acc, property, _i, arr) => {
-    if (property.startsWith('[')) {
-      const nodes = property.slice(1).split('.');
-
-      if (nodes.length > 1) {
-        const key = nodes.shift() || previousNode;
-        obj[key] = {
-          ...obj[key],
-          ...parse([[`[${nodes.join('.')}`, ...arr.splice(1)]], obj[key]),
-        };
-
-        return key;
-      }
-
-      const key = property.slice(1, property.length - 1);
-      obj[key] = obj[key] ?? {};
+    if (nodes.length > 1) {
+      const key = nodes.shift() || acc;
+      obj[key] = {
+        ...obj[key],
+        ...parse([[`[${nodes.join('.')}`, ...arr.splice(1)]], obj[key]),
+      };
 
       return key;
     }
 
-    const [key, value] = property.split('=');
-    const trimmedKey = key.trim();
-    const trimmedValue = value.trim();
+    const key = property.slice(1, property.length - 1);
+    obj[key] = obj[key] ?? {};
+
+    return key;
+  }
+
+  const [key, value] = property.split('=');
+  const trimmedKey = key.trim();
+  const trimmedValue = value.trim();
     obj[acc][trimmedKey] = obj[acc][trimmedKey] ?? formatValue(trimmedValue);
-    previousNode = acc;
 
-    return acc;
-  };
+  return acc;
+};
 
-  data.forEach((leaf) => leaf.reduce(callback, ''));
+const parse = (data, object = {}) => {
+  let previousNode = '';
 
-  return obj;
+  return data.reduce((obj, leaf) => {
+    previousNode = leaf.reduce(callback(obj), previousNode);
+
+    return obj;
+  }, object);
 };
 
 export default (data) => parse(prepareData(data));
