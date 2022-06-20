@@ -6,7 +6,7 @@
 # Annotation
 Simple parser from ini to javascript object. Some advantages:
 * Zero Dependencies
-* Size of index.js 1.9kB
+* Size of index.js 1.84kB
 * Native JS
 * Prototype Pollution Protection
 * Tested with jest and snyk
@@ -15,15 +15,17 @@ Simple parser from ini to javascript object. Some advantages:
 Install my package with:
 ```bash
 npm install https://github.com/gomez-git/js-ini-parser
+
 ```
 Try it in your project:
 ```javascript
 import { readFileSync } from 'fs';
 import parse from '@gomez-git/js-ini-parser';
 
-const data = readFileSync('file.ini', 'utf8');
+const data = readFileSync('file.ini', 'utf-8');
 const object = parse(data);
 console.log(object);
+
 ```
 ## Example
 ### Input:
@@ -40,15 +42,11 @@ key5 = value5
 [common.setting6]
 key=value
 ops=vops
-
 [common.setting6.doge]
 wow = so much
 
 [prototype]
 keys=null
-
-[.hello]
-wow=not
 
 [group1]
 foo=bar
@@ -64,6 +62,12 @@ __proto__ = false
 
 [constructor.hell]
 toSrting=false
+
+[wow]
+collection[]=one
+collection[]=two
+collection[]=three
+
 ```
 ### Output:
 ```javascript
@@ -96,6 +100,14 @@ toSrting=false
         number: 45
       }
     }
+  },
+  wow: {
+    collection: [
+      'one',
+      'two',
+      'three'
+    ]
   }
 }
+
 ```
