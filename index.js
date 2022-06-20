@@ -1,3 +1,5 @@
+const forbiddenValues = /(constructor|__proto__|prototype)/;
+
 const prepareData = (data) => data
   .split('\n')
   .filter((line) => /^[^;#\s]/.test(line))
@@ -8,7 +10,8 @@ const prepareData = (data) => data
       acc[acc.length - 1].push(line);
     }
     return acc;
-  }, []);
+  }, [])
+  .filter((row) => row.every((value) => !forbiddenValues.test(value)));
 
 const formatValue = (value) => {
   switch (true) {
@@ -22,8 +25,6 @@ const formatValue = (value) => {
   }
 };
 
-const forbiddenKeys = ['constructor', '__proto__', 'prototype'];
-const isForbiddenKey = (key) => forbiddenKeys.find((forbiddenKey) => forbiddenKey === key);
 
 const parse = (data, object) => {
   const obj = object ?? {};
@@ -35,10 +36,6 @@ const parse = (data, object) => {
 
       if (nodes.length > 1) {
         const key = nodes.shift() || previousNode;
-        if (isForbiddenKey(key)) {
-          arr.splice(1);
-          return acc;
-        }
         obj[key] = {
           ...obj[key],
           ...parse([[`[${nodes.join('.')}`, ...arr.splice(1)]], obj[key]),
@@ -48,11 +45,6 @@ const parse = (data, object) => {
       }
 
       const key = property.slice(1, property.length - 1);
-      if (isForbiddenKey(key)) {
-        arr.splice(1);
-        previousNode = key;
-        return acc;
-      }
       obj[key] = obj[key] ?? {};
 
       return key;
@@ -61,9 +53,6 @@ const parse = (data, object) => {
     const [key, value] = property.split('=');
     const trimmedKey = key.trim();
     const trimmedValue = value.trim();
-    if (isForbiddenKey(trimmedKey)) {
-      return acc;
-    }
     obj[acc][trimmedKey] = obj[acc][trimmedKey] ?? formatValue(trimmedValue);
     previousNode = acc;
 
