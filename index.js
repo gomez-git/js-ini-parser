@@ -44,11 +44,7 @@ const createProperty = (property, acc, arr, obj) => {
   return key;
 };
 
-const callback = (obj) => (acc, property, _i, arr) => {
-  if (property.startsWith('[')) {
-    return createProperty(property, acc, arr, obj);
-  }
-
+const createValue = (property, acc, obj) => {
   const [key, value] = property.split('=');
   const trimmedKey = key.trim();
   const trimmedValue = value.trim();
@@ -74,6 +70,12 @@ const callback = (obj) => (acc, property, _i, arr) => {
       return acc;
   }
 };
+
+const callback = (obj) => (acc, property, _i, arr) => (
+  property.startsWith('[')
+    ? createProperty(property, acc, arr, obj)
+    : createValue(property, acc, obj)
+);
 
 const parse = (data, object = {}) => {
   let previousNode = '';
