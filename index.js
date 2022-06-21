@@ -25,24 +25,28 @@ const formatValue = (value) => {
   }
 };
 
-const callback = (obj) => (acc, property, _i, arr) => {
-  if (property.startsWith('[')) {
-    const nodes = property.slice(1).split('.');
+const createProperty = (property, acc, arr, obj) => {
+  const nodes = property.slice(1).split('.');
 
-    if (nodes.length > 1) {
-      const key = nodes.shift() || acc;
-      obj[key] = {
-        ...obj[key], // eslint-disable-next-line no-use-before-define
-        ...parse([[`[${nodes.join('.')}`, ...arr.splice(1)]], obj[key]),
-      };
-
-      return key;
-    }
-
-    const key = property.slice(1, property.length - 1);
-    obj[key] = obj[key] ?? {};
+  if (nodes.length > 1) {
+    const key = nodes.shift() || acc;
+    obj[key] = {
+      ...obj[key], // eslint-disable-next-line no-use-before-define
+      ...parse([[`[${nodes.join('.')}`, ...arr.splice(1)]], obj[key]),
+    };
 
     return key;
+  }
+
+  const key = property.slice(1, property.length - 1);
+  obj[key] = obj[key] ?? {};
+
+  return key;
+};
+
+const callback = (obj) => (acc, property, _i, arr) => {
+  if (property.startsWith('[')) {
+    return createProperty(property, acc, arr, obj);
   }
 
   const [key, value] = property.split('=');
