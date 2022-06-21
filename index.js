@@ -1,66 +1,81 @@
-/* eslint-disable no-param-reassign, no-use-before-define */
+/* eslint-disable no-param-reassign */
 const forbiddenValues = /(constructor|__proto__|prototype)/;
 
 const prepareData = (data) => data
   .split('\n')
   .filter((line) => /^[^;#\s]/.test(line))
-  .reduce((acc, line) => {
-    if (line.startsWith('[')) {
-      acc[acc.length] = [line];
-    } else {
-      acc[acc.length - 1].push(line);
-    }
-    return acc;
-  }, [])
+  .reduce((acc, line) => (line.startsWith('[')
+    ? [...acc, [line]]
+    : [...acc.slice(0, -1), [...(acc[acc.length - 1] ?? []), line]]
+  ), [])
   .filter(([property]) => !forbiddenValues.test(property))
   .map((row) => row.filter((value) => !forbiddenValues.test(value)));
 
 const formatValue = (value) => {
   switch (true) {
+    case value === '':
+      return value;
     case value === 'true':
     case value === 'false':
     case value === 'null':
-    case !Number.isNaN(parseInt(value, 10)):
+    case !Number.isNaN(Number(value)):
       return JSON.parse(value);
     default:
       return value;
   }
 };
 
-const callback = (obj) => (acc, property, _i, arr) => {
-  if (property.startsWith('[')) {
-    const nodes = property.slice(1).split('.');
+const createProperty = (property, acc, arr, obj) => {
+  const nodes = property.slice(1).split('.');
 
-    if (nodes.length > 1) {
-      const key = nodes.shift() || acc;
-      obj[key] = {
-        ...obj[key],
-        ...parse([[`[${nodes.join('.')}`, ...arr.splice(1)]], obj[key]),
-      };
-
-      return key;
-    }
-
-    const key = property.slice(1, property.length - 1);
-    obj[key] = obj[key] ?? {};
+  if (nodes.length > 1) {
+    const key = nodes.shift() || acc;
+    obj[key] = {
+      ...obj[key], // eslint-disable-next-line no-use-before-define
+      ...parse([[`[${nodes.join('.')}`, ...arr.splice(1)]], obj[key]),
+    };
 
     return key;
   }
 
+  const key = property.slice(1, -1);
+  obj[key] = obj[key] ?? {};
+
+  return key;
+};
+
+const createValue = (property, acc, obj) => {
   const [key, value] = property.split('=');
   const trimmedKey = key.trim();
   const trimmedValue = value.trim();
 
-  if (trimmedKey.endsWith('[]')) {
-    const newKey = trimmedKey.slice(0, -2);
-    obj[acc][newKey] = obj[acc][newKey] ?? [];
-    obj[acc][newKey] = [...obj[acc][newKey], formatValue(trimmedValue)];
-  } else {
-    obj[acc][trimmedKey] = formatValue(trimmedValue);
+  switch (true) {
+    case trimmedKey.endsWith('[]') && acc === '': {
+      const newKey = trimmedKey.slice(0, -2);
+      obj[newKey] = obj[newKey] ?? [];
+      obj[newKey] = [...obj[newKey], formatValue(trimmedValue)];
+      return acc;
+    }
+    case trimmedKey.endsWith('[]'): {
+      const newKey = trimmedKey.slice(0, -2);
+      obj[acc][newKey] = obj[acc][newKey] ?? [];
+      obj[acc][newKey] = [...obj[acc][newKey], formatValue(trimmedValue)];
+      return acc;
+    }
+    case acc === '':
+      obj[trimmedKey] = formatValue(trimmedValue);
+      return acc;
+    default:
+      obj[acc][trimmedKey] = formatValue(trimmedValue);
+      return acc;
   }
-
-  return acc;
 };
+
+const callback = (obj) => (acc, property, _i, arr) => (
+  property.startsWith('[')
+    ? createProperty(property, acc, arr, obj)
+    : createValue(property, acc, obj)
+);
 
 const parse = (data, object = {}) => {
   let previousNode = '';

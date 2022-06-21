@@ -4,23 +4,23 @@
   "description": "Simple parser from ini to js object",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "test": "jest"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gomez-git/js-ini-parser.git"
-  },
   "keywords": [
     "ini",
     "parser"
   ],
   "author": "Konstantin Kuzin",
   "license": "MIT",
+  "homepage": "https://github.com/gomez-git/js-ini-parser#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gomez-git/js-ini-parser.git"
+  },
   "bugs": {
     "url": "https://github.com/gomez-git/js-ini-parser/issues"
   },
-  "homepage": "https://github.com/gomez-git/js-ini-parser#readme",
+  "scripts": {
+    "test": "jest"
+  },
   "devDependencies": {
     "eslint": "^8.18.0",
     "eslint-config-airbnb-base": "^15.0.0",

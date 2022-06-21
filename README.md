@@ -6,7 +6,7 @@
 # Annotation
 Simple parser from ini to javascript object. Some advantages:
 * Zero Dependencies
-* Size of index.js 1.84kB
+* Size of index.js 2.45kB
 * Native JS
 * Prototype Pollution Protection
 * Tested with jest and snyk
@@ -14,7 +14,7 @@ Simple parser from ini to javascript object. Some advantages:
 ## How to use
 Install my package with:
 ```bash
-npm install https://github.com/gomez-git/js-ini-parser
+npm install github:gomez-git/js-ini-parser
 
 ```
 Try it in your project:
@@ -30,84 +30,54 @@ console.log(object);
 ## Example
 ### Input:
 ```ini
-[common]
-follow=false
-setting1=Value 1
-setting3=null
-setting4=blah blah
-; hello
-[.setting5]
-key5 = value5
-# world
-[common.setting6]
-key=value
-ops=vops
-[common.setting6.doge]
-wow = so much
+name=@gomez-git/js-ini-parser
+version=0.0.4
+private=true
+description=Simple parser from ini to js object
+main=index.js
+type=module
+keywords[]=ini
+keywords[]=parser
+author=Konstantin Kuzin
+license=MIT
 
-[prototype]
-keys=null
+[some]
+value = 12345
+constructor[] = undefined
 
-[group1]
-foo=bar
-baz=bars
-nest=str
+[.nested.example]
+value = null
 
-[group3]
-fee=100500
+[__proto__]
+keys = false
 
-[.deep.id]
-number=45
-__proto__ = false
-
-[constructor.hell]
-toSrting=false
-
-[wow]
-collection[]=one
-collection[]=two
-collection[]=three
+[.prototype]
+toString='is not a function'
 
 ```
 ### Output:
 ```javascript
 {
-  common: {
-    follow: false,
-    setting1: 'Value 1',
-    setting3: null,
-    setting4: 'blah blah',
-    setting5: {
-      key5: 'value5'
+  name: '@gomez-git/js-ini-parser',
+  version: '0.0.4',
+  private: true,
+  description: 'Simple parser from ini to js object',
+  main: 'index.js',
+  type: 'module',
+  keywords: [
+    'ini',
+    'parser'
+  ],
+  author: 'Konstantin Kuzin'
+  license: 'MIT',
+  some: {
+    value: 12345,
+    nested: {
+      example: {
+        value: null,
+      },
     },
-    setting6: {
-      key: 'value',
-      ops: 'vops',
-      doge: {
-        wow: 'so much'
-      }
-    }
   },
-  group1: {
-    foo: 'bar',
-    baz: 'bars',
-    nest: 'str'
-  },
-  group3: {
-    fee: 100500,
-    deep: {
-      id: {
-        number: 45
-      }
-    }
-  },
-  wow: {
-    collection: [
-      'one',
-      'two',
-      'three'
-    ]
-  }
 }
 
 ```

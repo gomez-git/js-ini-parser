@@ -12,6 +12,7 @@ test.each([
   ['file1.ini', 'expected1.json'],
   ['file2.ini', 'expected2.json'],
   ['file3.ini', 'expected3.json'],
+  ['file4.ini', 'expected4.json'],
 ])('parse %s', (filename1, filename2) => {
   const file = readFile(filename1);
   const actualValue = parse(file);
