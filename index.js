@@ -38,7 +38,7 @@ const createProperty = (property, acc, arr, obj) => {
     return key;
   }
 
-  const key = property.slice(1, property.length - 1);
+  const key = property.slice(1, -1);
   obj[key] = obj[key] ?? {};
 
   return key;
