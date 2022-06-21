@@ -49,15 +49,26 @@ const callback = (obj) => (acc, property, _i, arr) => {
   const trimmedKey = key.trim();
   const trimmedValue = value.trim();
 
-  if (trimmedKey.endsWith('[]')) {
-    const newKey = trimmedKey.slice(0, -2);
-    obj[acc][newKey] = obj[acc][newKey] ?? [];
-    obj[acc][newKey] = [...obj[acc][newKey], formatValue(trimmedValue)];
-  } else {
-    obj[acc][trimmedKey] = formatValue(trimmedValue);
+  switch (true) {
+    case trimmedKey.endsWith('[]') && acc === '': {
+      const newKey = trimmedKey.slice(0, -2);
+      obj[newKey] = obj[newKey] ?? [];
+      obj[newKey] = [...obj[newKey], formatValue(trimmedValue)];
+      return acc;
+    }
+    case trimmedKey.endsWith('[]'): {
+      const newKey = trimmedKey.slice(0, -2);
+      obj[acc][newKey] = obj[acc][newKey] ?? [];
+      obj[acc][newKey] = [...obj[acc][newKey], formatValue(trimmedValue)];
+      return acc;
+    }
+    case acc === '':
+      obj[trimmedKey] = formatValue(trimmedValue);
+      return acc;
+    default:
+      obj[acc][trimmedKey] = formatValue(trimmedValue);
+      return acc;
   }
-
-  return acc;
 };
 
 const parse = (data, object = {}) => {
