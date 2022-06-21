@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign, no-use-before-define */
+/* eslint-disable no-param-reassign */
 const forbiddenValues = /(constructor|__proto__|prototype)/;
 
 const prepareData = (data) => data
@@ -34,7 +34,7 @@ const callback = (obj) => (acc, property, _i, arr) => {
     if (nodes.length > 1) {
       const key = nodes.shift() || acc;
       obj[key] = {
-        ...obj[key],
+        ...obj[key], // eslint-disable-next-line no-use-before-define
         ...parse([[`[${nodes.join('.')}`, ...arr.splice(1)]], obj[key]),
       };
 
