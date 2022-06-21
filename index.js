@@ -4,14 +4,10 @@ const forbiddenValues = /(constructor|__proto__|prototype)/;
 const prepareData = (data) => data
   .split('\n')
   .filter((line) => /^[^;#\s]/.test(line))
-  .reduce((acc, line) => {
-    if (line.startsWith('[')) {
-      acc[acc.length] = [line];
-    } else {
-      acc[acc.length - 1].push(line);
-    }
-    return acc;
-  }, [])
+  .reduce((acc, line) => (line.startsWith('[')
+    ? [...acc, [line]]
+    : [...acc.slice(0, -1), [...(acc[acc.length - 1] ?? []), line]]
+  ), [])
   .filter(([property]) => !forbiddenValues.test(property))
   .map((row) => row.filter((value) => !forbiddenValues.test(value)));
 
