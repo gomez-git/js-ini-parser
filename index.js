@@ -17,10 +17,12 @@ const prepareData = (data) => data
 
 const formatValue = (value) => {
   switch (true) {
+    case value === '':
+      return value;
     case value === 'true':
     case value === 'false':
     case value === 'null':
-    case !Number.isNaN(parseInt(value, 10)):
+    case !Number.isNaN(Number(value)):
       return JSON.parse(value);
     default:
       return value;
