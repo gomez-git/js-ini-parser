@@ -68,7 +68,7 @@ toString='is not a function'
     'ini',
     'parser'
   ],
-  author: 'Konstantin Kuzin'
+  author: 'Konstantin Kuzin',
   license: 'MIT',
   some: {
     value: 12345,
@@ -78,6 +78,6 @@ toString='is not a function'
       },
     },
   },
-}
+};
 
 ```
